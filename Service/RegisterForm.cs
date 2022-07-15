@@ -24,12 +24,28 @@ namespace Service
             {
                 try
                 {
+                    #region insert new user
+                    // MonthlyFunding
+                    string query = "IF NOT EXISTS (SELECT * FROM dbo.MonthlyFunding WHERE MSSV = @mssv1 ) " +
+                                    "BEGIN " +
+                                        "INSERT INTO dbo.MonthlyFunding (MSSV) VALUES ( @mssv2 ) " +
+                                    "END ";
+                    int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, mssv });
+                    
+                    // Account
+                    query = "INSERT INTO dbo.Account VALUES ( @mssv , @name , @pwd , 0 ) ";
+                    i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, name, pwd });
 
+                    // Person
+                    query = "INSERT INTO dbo.Person VALUES ( @mssv , @fName , @lName , @email , @phone ) ";
+                    i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, fName, lName, email, phone });
+                    #endregion
                     MessageBox.Show("Register Successfully!");
+                    this.Close();
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    // do nothing
                 }
             }
         }
@@ -65,7 +81,7 @@ namespace Service
                 return false;
             }
 
-            query = "SELECT * FROM dbo.Account WHERE name = @name ";
+            query = "SELECT * FROM dbo.Account WHERE display_name = @name ";
             int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { name });
             if (i >= 1)
             {

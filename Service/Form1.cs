@@ -20,7 +20,10 @@ namespace Service
 
         private void createAccBtn_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
+            RegisterForm f = new RegisterForm();
+            f.ShowDialog();
+            this.Show();
         }
     }
 }
