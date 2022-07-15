@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -31,7 +32,8 @@ namespace Service
                                         "INSERT INTO dbo.MonthlyFunding (MSSV) VALUES ( @mssv2 ) " +
                                     "END ";
                     int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, mssv });
-                    
+
+                    pwd = hashing(pwd);
                     // Account
                     query = "INSERT INTO dbo.Account VALUES ( @mssv , @name , @pwd , 0 ) ";
                     i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, name, pwd });
@@ -48,6 +50,20 @@ namespace Service
                     // do nothing
                 }
             }
+        }
+
+        string hashing(string str)
+        {
+            byte[] temp = ASCIIEncoding.ASCII.GetBytes(str);
+            byte[] hashData = new MD5CryptoServiceProvider().ComputeHash(temp);
+
+            string result = "";
+            foreach(byte b in hashData)
+            {
+                result += b;
+            }
+
+            return result;
         }
 
         bool isValid()
