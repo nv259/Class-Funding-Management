@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccess.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,7 +13,7 @@ namespace Service
 {
     public partial class UserForm : Form
     {
-        public UserForm()
+        public UserForm(Account acc)
         {
             InitializeComponent();
         }

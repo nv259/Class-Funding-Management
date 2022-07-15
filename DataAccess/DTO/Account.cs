@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,14 @@ namespace DataAccess.DTO
 {
     public class Account
     {
+        public Account(DataRow dr)
+        {
+            mssv = (int)dr["MSSV"];
+            display_name = dr["display_name"].ToString();
+            password = dr["password"].ToString();
+            role = (int)dr["role"];
+        }
+
         private int mssv, role;
         private string display_name, password;
 

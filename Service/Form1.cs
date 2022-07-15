@@ -1,5 +1,7 @@
 using DataAccess.DAO;
 using DataAccess.DTO;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Service
 {
@@ -31,18 +33,33 @@ namespace Service
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
-            string query = "SELECT * FROM dbo.Account WHERE display_name = @name ";
-            int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { this.userName_textBox.Text });
-
-            if (i <= 0)
+            string query = "SELECT * FROM dbo.Account WHERE display_name = @name AND password = @pwd ";
+            if (DataProvider.Instance.ExecuteQuery(query, new object[] { this.userName_textBox.Text, hashing(this.userPassword_textBox.Text) }).Rows.Count <= 0)
             {
                 MessageBox.Show("Invalid username or password!");
                 this.userPassword_textBox.Text = "";
             }
             else
-            { 
-                Account loginAccount = 
+            {
+                Account loginAccount = AccountDAO.Instance.GetAccountByUserName(this.userName_textBox.Text);
+                UserForm userForm = new UserForm(loginAccount);
+                userForm.ShowDialog();
+                this.Close();
             }
+        }
+
+        string hashing(string str)
+        {
+            byte[] temp = ASCIIEncoding.ASCII.GetBytes(str);
+            byte[] hashData = new MD5CryptoServiceProvider().ComputeHash(temp);
+
+            string result = "";
+            foreach(byte b in hashData)
+            {
+                result += b;
+            }
+
+            return result;
         }
     }
 }
