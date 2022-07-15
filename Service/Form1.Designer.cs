@@ -121,6 +121,7 @@
             this.loginBtn.TabIndex = 7;
             this.loginBtn.Text = "LOGIN";
             this.loginBtn.UseVisualStyleBackColor = false;
+            this.loginBtn.Click += new System.EventHandler(this.loginBtn_Click);
             // 
             // remPwd
             // 
