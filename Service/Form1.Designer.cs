@@ -132,7 +132,7 @@
             this.remPwd.Location = new System.Drawing.Point(12, 114);
             this.remPwd.Name = "remPwd";
             this.remPwd.Size = new System.Drawing.Size(169, 24);
-            this.remPwd.TabIndex = 6;
+            this.remPwd.TabIndex = 1;
             this.remPwd.Text = "Remember Password";
             this.remPwd.UseVisualStyleBackColor = false;
             // 

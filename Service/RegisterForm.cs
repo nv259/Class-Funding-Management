@@ -35,7 +35,7 @@ namespace Service
 
                     pwd = hashing(pwd);
                     // Account
-                    query = "INSERT INTO dbo.Account VALUES ( @mssv , @name , @pwd , 0 ) ";
+                    query = "INSERT INTO dbo.Account VALUES ( @mssv , @name , @pwd , -1 ) ";
                     i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, name, pwd });
 
                     // Person

@@ -41,10 +41,14 @@ namespace Service
             }
             else
             {
+                this.Hide();
                 Account loginAccount = AccountDAO.Instance.GetAccountByUserName(this.userName_textBox.Text);
                 UserForm userForm = new UserForm(loginAccount);
                 userForm.ShowDialog();
-                this.Close();
+                if (userForm.IsLogout)
+                    this.Show();
+                else
+                    this.Close();
             }
         }
 
