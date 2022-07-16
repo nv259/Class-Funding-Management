@@ -25,18 +25,11 @@ namespace Service
             {
                 try
                 {
-                    #region insert new user
-                    // MonthlyFunding
-                    string query = "IF NOT EXISTS (SELECT * FROM dbo.MonthlyFunding WHERE MSSV = @mssv1 ) " +
-                                    "BEGIN " +
-                                        "INSERT INTO dbo.MonthlyFunding (MSSV) VALUES ( @mssv2 ) " +
-                                    "END ";
-                    int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, mssv });
-
+                    #region insert new user                 
                     pwd = hashing(pwd);
                     // Account
-                    query = "INSERT INTO dbo.Account VALUES ( @mssv , @name , @pwd , -1 ) ";
-                    i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, name, pwd });
+                    string query = "INSERT INTO dbo.Account VALUES ( @mssv , @name , @pwd , N'User' ) ";
+                    int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, name, pwd });
 
                     // Person
                     query = "INSERT INTO dbo.Person VALUES ( @mssv , @fName , @lName , @email , @phone ) ";

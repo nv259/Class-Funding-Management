@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccess.DAO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,90 @@ namespace Service
 {
     public partial class AdminForm : Form
     {
+        private BindingSource userList = new BindingSource();
         public AdminForm()
         {
             InitializeComponent();
+            user_dtgv.DataSource = userList;
+            Add_Binding();
+            Load_dtgv();
+        }
+
+        private void Add_Binding()
+        {
+            userName_txtBox.DataBindings.Add("Text", user_dtgv.DataSource, "display_name");
+            mssv_txtBox.DataBindings.Add("Text", user_dtgv.DataSource, "MSSV");
+            fName_txtBox.DataBindings.Add("Text", user_dtgv.DataSource, "first_name");
+            lName_txtBox.DataBindings.Add("Text", user_dtgv.DataSource, "last_name");
+            phone_txtBox.DataBindings.Add("Text", user_dtgv.DataSource, "phone_number");
+            email_txtBox.DataBindings.Add("Text", user_dtgv.DataSource, "email");
+            userRole_comboBox.DataBindings.Add("Text", user_dtgv.DataSource, "role");
+        }
+
+        private void Load_dtgv()
+        {
+            string query = "SELECT Account.MSSV, Account.display_name, Account.role, Person.first_name, Person.last_name, Person.email, Person.phone_number INTO TempTable FROM [dbo].[Person] " +
+                           "INNER JOIN [dbo].[Account] ON Person.MSSV = Account.MSSV " +
+                           "WHERE dbo.fuConvertToUnsign1(first_name) like " + "'%" + DataProvider.LocDau(this.searchTxtBox.Text) + "%' " +
+                           "SELECT * FROM TempTable " +
+                           "DROP TABLE TempTable";
+            userList.DataSource = DataProvider.Instance.ExecuteQuery(query);
+        }
+
+        private void findBtn_Click(object sender, EventArgs e)
+        {
+            string query = "SELECT Account.MSSV, Account.display_name, Account.role, Person.first_name, Person.last_name, Person.email, Person.phone_number INTO TempTable FROM [dbo].[Person] " +
+                           "INNER JOIN [dbo].[Account] ON Person.MSSV = Account.MSSV " +
+                           "WHERE dbo.fuConvertToUnsign1(first_name) like " + "'%" + DataProvider.LocDau(this.searchTxtBox.Text) + "%' " +
+                           "SELECT * FROM TempTable " +
+                           "DROP TABLE TempTable";
+
+            userList.DataSource = DataProvider.Instance.ExecuteQuery(query);
+        }
+
+        private void resetBtn_Click(object sender, EventArgs e)
+        {
+            string query = "UPDATE dbo.Account SET password = N'17739242239201861993414619121120323326112' WHERE MSSV = @mssv ";
+            int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv_txtBox.Text });
+        }
+
+        private void updateBtn_Click(object sender, EventArgs e)
+        {
+            string query = "UPDATE dbo.Account SET role = @role WHERE MSSV = @mssv ";
+            int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { this.userRole_comboBox.Text, int.Parse(this.mssv_txtBox.Text) });
+            MessageBox.Show("User role is updated successfully!");
+            Load_dtgv();
+        }
+
+        private void deleteBtn_Click(object sender, EventArgs e)
+        {
+            string query = "DELETE FROM dbo.Account WHERE MSSV = @mssv ";
+            int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { int.Parse(this.mssv_txtBox.Text) });
+            MessageBox.Show("User deleted!");
+            Load_dtgv();
+        }
+
+        private void Add_btn_Click(object sender, EventArgs e)
+        {
+            int mssv = int.Parse(this.mssv_txtBox.Text);
+            string display_name = this.userName_txtBox.Text;
+
+            string query = "IF NOT EXISTS (SELECT * FROM dbo.MonthlyFunding WHERE MSSV = @mssv1 ) " +
+                            "BEGIN " +
+                                "INSERT INTO dbo.MonthlyFunding (MSSV) VALUES ( @mssv2 ) " +
+                            "END ";
+            int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, mssv });
+
+            // Account
+            query = "INSERT INTO dbo.Account VALUES ( @mssv , @name , @pwd , N'User' ) ";
+            i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, display_name, "17739242239201861993414619121120323326112" });
+
+            // Person
+            query = "INSERT INTO dbo.Person (MSSV) VALUES ( @mssv ) ";
+            i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv });
+
+            MessageBox.Show("A new user is added Successfully!");
+            Load_dtgv();
         }
     }
 }

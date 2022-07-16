@@ -29,7 +29,7 @@ namespace Service
             UserAccount = acc;
         }
 
-        void ChangeFormInterface(int type)
+        void ChangeFormInterface(string type)
         {
             userInfo = PersonDAO.Instance.GetUserInfoByMSSV(userAccount.Mssv);
 
@@ -50,19 +50,19 @@ namespace Service
             #endregion
 
             #region funding panel
-            yourFund_txtBox.Text = ((userInfo.Funds.April + userInfo.Funds.May + userInfo.Funds.June + userInfo.Funds.July) * userInfo.Funds.Charge).ToString();
+            yourFund_txtBox.Text = ((userInfo.Funds.April + userInfo.Funds.May + userInfo.Funds.June + userInfo.Funds.July) * userInfo.Funds.Charge).ToString() + ".000 vnd";
             #endregion
 
             switch (type)
             {
-                case -1:
+                case "User":
                     adminToolStripMenuItem.Enabled = false;
                     staffToolStripMenuItem.Enabled = false;
                     break;
-                case 0:
+                case "Staff":
                     adminToolStripMenuItem.Enabled = false; 
                     break;
-                case 1:
+                case "Admin":
                     staffToolStripMenuItem.Enabled = false;
                     break;
             }
@@ -135,6 +135,24 @@ namespace Service
         private void textBox6_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void specialFunding_btn_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Still working :3");
+        }
+
+        private void monthlyFunding_btn_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Still working :3");
+        }
+
+        private void adminToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            AdminForm f = new AdminForm();
+            f.ShowDialog();
+            this.Show();
         }
     }
 }
