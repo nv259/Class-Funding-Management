@@ -60,8 +60,8 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.monthlyFunding_btn = new System.Windows.Forms.Button();
             this.funding_pnl = new System.Windows.Forms.Panel();
-            this.textBox20 = new System.Windows.Forms.TextBox();
-            this.thisMonthOutcome_txtBox = new System.Windows.Forms.TextBox();
+            this.balance_txtBox = new System.Windows.Forms.TextBox();
+            this.textBox14 = new System.Windows.Forms.TextBox();
             this.thisMonthIncome_txtBox = new System.Windows.Forms.TextBox();
             this.textBox18 = new System.Windows.Forms.TextBox();
             this.totalOutcome_txtBox = new System.Windows.Forms.TextBox();
@@ -108,6 +108,7 @@
             this.staffToolStripMenuItem.Name = "staffToolStripMenuItem";
             this.staffToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
             this.staffToolStripMenuItem.Text = "Staff";
+            this.staffToolStripMenuItem.Click += new System.EventHandler(this.staffToolStripMenuItem_Click);
             // 
             // publicAnnoucementToolStripMenuItem
             // 
@@ -375,10 +376,10 @@
             this.yourFund_txtBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(170)))), ((int)(((byte)(170)))));
             this.yourFund_txtBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.yourFund_txtBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(35)))), ((int)(((byte)(52)))));
-            this.yourFund_txtBox.Location = new System.Drawing.Point(86, 98);
+            this.yourFund_txtBox.Location = new System.Drawing.Point(132, 98);
             this.yourFund_txtBox.Name = "yourFund_txtBox";
             this.yourFund_txtBox.ReadOnly = true;
-            this.yourFund_txtBox.Size = new System.Drawing.Size(219, 27);
+            this.yourFund_txtBox.Size = new System.Drawing.Size(173, 27);
             this.yourFund_txtBox.TabIndex = 18;
             this.yourFund_txtBox.TabStop = false;
             this.yourFund_txtBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -391,10 +392,10 @@
             this.textBox21.Location = new System.Drawing.Point(4, 100);
             this.textBox21.Name = "textBox21";
             this.textBox21.ReadOnly = true;
-            this.textBox21.Size = new System.Drawing.Size(79, 20);
+            this.textBox21.Size = new System.Drawing.Size(122, 20);
             this.textBox21.TabIndex = 17;
             this.textBox21.TabStop = false;
-            this.textBox21.Text = "Your fund";
+            this.textBox21.Text = "Your fund state";
             // 
             // specialFunding_btn
             // 
@@ -464,8 +465,8 @@
             // 
             this.funding_pnl.BackColor = System.Drawing.Color.DarkGray;
             this.funding_pnl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.funding_pnl.Controls.Add(this.textBox20);
-            this.funding_pnl.Controls.Add(this.thisMonthOutcome_txtBox);
+            this.funding_pnl.Controls.Add(this.balance_txtBox);
+            this.funding_pnl.Controls.Add(this.textBox14);
             this.funding_pnl.Controls.Add(this.thisMonthIncome_txtBox);
             this.funding_pnl.Controls.Add(this.textBox18);
             this.funding_pnl.Controls.Add(this.totalOutcome_txtBox);
@@ -483,33 +484,33 @@
             this.funding_pnl.Size = new System.Drawing.Size(305, 262);
             this.funding_pnl.TabIndex = 4;
             // 
-            // textBox20
+            // balance_txtBox
             // 
-            this.textBox20.BackColor = System.Drawing.Color.DarkGray;
-            this.textBox20.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox20.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.textBox20.Location = new System.Drawing.Point(3, 223);
-            this.textBox20.Name = "textBox20";
-            this.textBox20.ReadOnly = true;
-            this.textBox20.Size = new System.Drawing.Size(110, 20);
-            this.textBox20.TabIndex = 13;
-            this.textBox20.TabStop = false;
-            this.textBox20.Text = "Outcome (tm)";
-            this.textBox20.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.balance_txtBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(143)))), ((int)(((byte)(143)))), ((int)(((byte)(143)))));
+            this.balance_txtBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.balance_txtBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.balance_txtBox.ForeColor = System.Drawing.Color.White;
+            this.balance_txtBox.Location = new System.Drawing.Point(119, 219);
+            this.balance_txtBox.Name = "balance_txtBox";
+            this.balance_txtBox.ReadOnly = true;
+            this.balance_txtBox.Size = new System.Drawing.Size(181, 27);
+            this.balance_txtBox.TabIndex = 13;
+            this.balance_txtBox.TabStop = false;
+            this.balance_txtBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // thisMonthOutcome_txtBox
+            // textBox14
             // 
-            this.thisMonthOutcome_txtBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(143)))), ((int)(((byte)(143)))), ((int)(((byte)(143)))));
-            this.thisMonthOutcome_txtBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.thisMonthOutcome_txtBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.thisMonthOutcome_txtBox.ForeColor = System.Drawing.Color.White;
-            this.thisMonthOutcome_txtBox.Location = new System.Drawing.Point(119, 221);
-            this.thisMonthOutcome_txtBox.Name = "thisMonthOutcome_txtBox";
-            this.thisMonthOutcome_txtBox.ReadOnly = true;
-            this.thisMonthOutcome_txtBox.Size = new System.Drawing.Size(181, 27);
-            this.thisMonthOutcome_txtBox.TabIndex = 12;
-            this.thisMonthOutcome_txtBox.TabStop = false;
-            this.thisMonthOutcome_txtBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox14.BackColor = System.Drawing.Color.DarkGray;
+            this.textBox14.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox14.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.textBox14.Location = new System.Drawing.Point(3, 219);
+            this.textBox14.Name = "textBox14";
+            this.textBox14.ReadOnly = true;
+            this.textBox14.Size = new System.Drawing.Size(110, 20);
+            this.textBox14.TabIndex = 12;
+            this.textBox14.TabStop = false;
+            this.textBox14.Text = "Balance";
+            this.textBox14.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // thisMonthIncome_txtBox
             // 
@@ -726,11 +727,11 @@
         private TextBox textBox16;
         private TextBox totalIncome_txtBox;
         private TextBox textBox12;
-        private TextBox textBox20;
-        private TextBox thisMonthOutcome_txtBox;
         private TextBox thisMonthIncome_txtBox;
         private TextBox textBox18;
         private TextBox textBox21;
         private TextBox yourFund_txtBox;
+        private TextBox balance_txtBox;
+        private TextBox textBox14;
     }
 }

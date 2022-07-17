@@ -21,7 +21,7 @@ namespace Service
         public Account UserAccount
         {
             get { return userAccount; }
-            set { userAccount = value; ChangeFormInterface(UserAccount.Role); }
+            set { userAccount = value; ChangeFormInterface(value.Role); }
         }
         public UserForm(Account acc)
         {
@@ -42,15 +42,30 @@ namespace Service
             #endregion
 
             #region khtn2021 panel
-            charge_txtBox.Text = "   " + userInfo.Funds.Charge.ToString() + ".000 vnd";
-            totalIncome_txtBox.Text = "";
-            totalOutcome_txtBox.Text = "";
-            thisMonthIncome_txtBox.Text = "";
-            thisMonthOutcome_txtBox.Text = "";
+            string query = "SELECT TOP 1 charge FROM dbo.KHTN2021 ORDER BY id DESC";
+            int charge = Convert.ToInt32(DataProvider.Instance.ExecuteScalar(query));
+            charge_txtBox.Text = charge.ToString() + ".000 vnd";
+
+            query = "SELECT SUM(current_income) FROM dbo.KHTN2021";
+            int totalIncome = Convert.ToInt32(DataProvider.Instance.ExecuteScalar(query));
+            query = "SELECT COUNT(funded) FROM dbo.MonthlyFunding WHERE funded = 1";
+            totalIncome += Convert.ToInt32(DataProvider.Instance.ExecuteScalar(query)) * charge;
+            query = "SELECT SUM(sum_money) FROM dbo.SpecialFunding";
+            totalIncome += Convert.ToInt32(DataProvider.Instance.ExecuteScalar(query));
+            totalIncome_txtBox.Text = totalIncome.ToString() + ".000 vnd";
+
+            query = "SELECT SUM(current_outcome) FROM dbo.KHTN2021";
+            int totalOutcome = Convert.ToInt32(DataProvider.Instance.ExecuteScalar(query));
+            totalOutcome_txtBox.Text = totalOutcome.ToString() + ".000 vnd";
+
+            query = "SELECT COUNT(*) FROM dbo.MonthlyFunding WHERE funded = 1";
+            thisMonthIncome_txtBox.Text = ((int)DataProvider.Instance.ExecuteScalar(query) * charge).ToString()  + ".000 vnd";
+
+            balance_txtBox.Text = (totalIncome - totalOutcome).ToString() + ".000 vnd";
             #endregion
 
             #region funding panel
-            yourFund_txtBox.Text = ((userInfo.Funds.April + userInfo.Funds.May + userInfo.Funds.June + userInfo.Funds.July) * userInfo.Funds.Charge).ToString() + ".000 vnd";
+            yourFund_txtBox.Text = (userInfo.Funds.Funded == 1) ? "DONE" : "NOT YET";
             #endregion
 
             switch (type)
@@ -151,6 +166,14 @@ namespace Service
         {
             this.Hide();
             AdminForm f = new AdminForm();
+            f.ShowDialog();
+            this.Show();
+        }
+
+        private void staffToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            StaffForm f = new StaffForm();
             f.ShowDialog();
             this.Show();
         }

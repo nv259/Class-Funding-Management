@@ -36,7 +36,7 @@ namespace Service
         private void Load_dtgv()
         {
             string query = "SELECT Account.MSSV, Account.display_name, Account.role, Person.first_name, Person.last_name, Person.email, Person.phone_number INTO TempTable FROM [dbo].[Person] " +
-                           "INNER JOIN [dbo].[Account] ON Person.MSSV = Account.MSSV " +
+                           "FULL JOIN [dbo].[Account] ON Person.MSSV = Account.MSSV " +
                            "WHERE dbo.fuConvertToUnsign1(first_name) like " + "'%" + DataProvider.LocDau(this.searchTxtBox.Text) + "%' " +
                            "SELECT * FROM TempTable " +
                            "DROP TABLE TempTable";
@@ -46,7 +46,7 @@ namespace Service
         private void findBtn_Click(object sender, EventArgs e)
         {
             string query = "SELECT Account.MSSV, Account.display_name, Account.role, Person.first_name, Person.last_name, Person.email, Person.phone_number INTO TempTable FROM [dbo].[Person] " +
-                           "INNER JOIN [dbo].[Account] ON Person.MSSV = Account.MSSV " +
+                           "FULL JOIN [dbo].[Account] ON Person.MSSV = Account.MSSV " +
                            "WHERE dbo.fuConvertToUnsign1(first_name) like " + "'%" + DataProvider.LocDau(this.searchTxtBox.Text) + "%' " +
                            "SELECT * FROM TempTable " +
                            "DROP TABLE TempTable";
@@ -58,6 +58,7 @@ namespace Service
         {
             string query = "UPDATE dbo.Account SET password = N'17739242239201861993414619121120323326112' WHERE MSSV = @mssv ";
             int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv_txtBox.Text });
+            MessageBox.Show("Reset password successfully!");
         }
 
         private void updateBtn_Click(object sender, EventArgs e)
@@ -78,25 +79,32 @@ namespace Service
 
         private void Add_btn_Click(object sender, EventArgs e)
         {
-            int mssv = int.Parse(this.mssv_txtBox.Text);
-            string display_name = this.userName_txtBox.Text;
+            try
+            {
+                int mssv = int.Parse(this.mssv_txtBox.Text);
+                string display_name = this.userName_txtBox.Text;
 
-            string query = "IF NOT EXISTS (SELECT * FROM dbo.MonthlyFunding WHERE MSSV = @mssv1 ) " +
-                            "BEGIN " +
-                                "INSERT INTO dbo.MonthlyFunding (MSSV) VALUES ( @mssv2 ) " +
-                            "END ";
-            int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, mssv });
+                string query = "IF NOT EXISTS (SELECT * FROM dbo.MonthlyFunding WHERE MSSV = @mssv1 ) " +
+                                "BEGIN " +
+                                    "INSERT INTO dbo.MonthlyFunding (MSSV) VALUES ( @mssv2 ) " +
+                                "END ";
+                int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, mssv });
 
-            // Account
-            query = "INSERT INTO dbo.Account VALUES ( @mssv , @name , @pwd , N'User' ) ";
-            i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, display_name, "17739242239201861993414619121120323326112" });
+                // Account
+                query = "INSERT INTO dbo.Account VALUES ( @mssv , @name , @pwd , @role ) ";
+                i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv, display_name, "17739242239201861993414619121120323326112", this.userRole_comboBox.Text });
 
-            // Person
-            query = "INSERT INTO dbo.Person (MSSV) VALUES ( @mssv ) ";
-            i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv });
+                // Person
+                query = "INSERT INTO dbo.Person (MSSV) VALUES ( @mssv ) ";
+                i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { mssv });
 
-            MessageBox.Show("A new user is added Successfully!");
-            Load_dtgv();
+                MessageBox.Show("A new user is added Successfully!");
+                Load_dtgv();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("User is already exist!");
+            }
         }
     }
 }

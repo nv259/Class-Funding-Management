@@ -227,7 +227,7 @@
             this.userRole_comboBox.FormattingEnabled = true;
             this.userRole_comboBox.Items.AddRange(new object[] {
             "User",
-            "Staff\t",
+            "Staff",
             "Admin"});
             this.userRole_comboBox.Location = new System.Drawing.Point(102, 342);
             this.userRole_comboBox.Name = "userRole_comboBox";

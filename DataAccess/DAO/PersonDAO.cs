@@ -23,7 +23,7 @@ namespace DataAccess.DAO
             DataTable dt = new DataTable();
             dt = DataProvider.Instance.ExecuteQuery(query, new object[] { mssv });
 
-            query = "SELECT April, May, June, July, charge, sum_money, time FROM dbo.MonthlyFunding " +
+            query = "SELECT funded, sum_money, time FROM dbo.MonthlyFunding " +
                     "LEFT JOIN dbo.SpecialFunding ON MonthlyFunding.MSSV = SpecialFunding.MSSV " +
                     "WHERE MonthlyFunding.MSSV = @mssv ";
             DataTable dt1 = new DataTable();

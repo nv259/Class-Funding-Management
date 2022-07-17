@@ -19,11 +19,7 @@ namespace DataAccess.DTO
             phone_number = dr["phone_number"].ToString();
             mssv = (int)dr["MSSV"];
 
-            funds.April = (row["April"] != null && (bool)row["April"]) ? 1 : 0;
-            funds.May = (row["May"] != null && (bool)row["May"]) ? 1 : 0;
-            funds.June = (row["June"] != null && (bool)row["June"]) ? 1 : 0;
-            funds.July = (row["July"] != null && (bool)row["July"]) ? 1 : 0;
-            funds.Charge = (int)row["charge"];
+            funds.Funded = (row["funded"] != null && (bool)row["funded"]) ? 1 : 0;
             funds.Sum_money = (row["sum_money"] != DBNull.Value) ? Convert.ToSingle(row["sum_money"]) : 0;
             //funds.Time = (row["time"] != null) ? (DateTime)row["time"] : new DateTime(0, 0, 0);
         }

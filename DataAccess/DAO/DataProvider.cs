@@ -72,6 +72,33 @@ namespace DataAccess.DAO
             return row_affect;
         }
 
+        public object ExecuteScalar(string query, object[] parameters = null)
+        {
+            object cell = new object();
+
+            using (SqlConnection sqlcon = new SqlConnection(strCon))
+            {
+                sqlcon.Open();
+
+                SqlCommand cmd = new SqlCommand(query, sqlcon);
+                if (parameters != null)
+                {
+                    string[] listPara = query.Split(' ');
+                    int i = 0;
+                    foreach (string item in listPara)
+                    {
+                        if (item.Contains('@'))
+                            cmd.Parameters.AddWithValue(item, parameters[i++]);
+                    }
+                }
+                cell = cmd.ExecuteScalar();
+
+                sqlcon.Close();
+            }
+
+            return cell;
+        }
+
         private static readonly string[] VietNamChar = new string[]
         {
             "aAeEoOuUiIdDyY",
