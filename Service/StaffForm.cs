@@ -14,11 +14,15 @@ namespace Service
     public partial class StaffForm : Form
     {
         BindingSource userList = new BindingSource();
-        public StaffForm()
+        private int staffID;
+        public int StaffID { get { return staffID; } set { staffID = value; } }
+        public StaffForm(int staffID)
         {
+            StaffID = staffID;
             InitializeComponent();
             user_dtgv.DataSource = userList;
             Load_dtgv();
+            AddBinding();
         }
 
         void Load_dtgv()
@@ -38,6 +42,74 @@ namespace Service
                                 "JOIN dbo.Person ON Person.MSSV = MonthlyFunding.MSSV " +
                                 "WHERE funded = @funded ";
                 userList.DataSource = DataProvider.Instance.ExecuteQuery(query, new object[] { int.Parse(filterBox.Text) });
+            }
+        }
+
+        void AddBinding()
+        {
+            mssv_txtBox.DataBindings.Add("Text", user_dtgv.DataSource, "MSSV");
+            phone_txtBox.DataBindings.Add("Text", user_dtgv.DataSource, "phone_number");
+            email_txtBox.DataBindings.Add("Text", user_dtgv.DataSource, "email");
+        }
+
+        private void typeAnnouncement_txtBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (typeAnnouncement_txtBox.Text)
+            {
+                case "   Changing Charge":
+                    link_txtBox.Enabled = false;
+                    description_txtBox.Text = "Changing charge to " + amount_txtBox.Text + ".000 vnd";
+                    break;
+                case "   Create Report (Income)":
+                    link_txtBox.Text = "Will be updated later";
+                    description_txtBox.Text = "Create Report (Income = " + amount_txtBox.Text + ".000 vnd)";
+                    break;
+                case "   Create Report (Outcome)":
+                    link_txtBox.Text = "Will be updated later";
+                    description_txtBox.Text = "Create Report (Outcome = " + amount_txtBox.Text + ".000 vnd)";
+                    break;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string date = DateTime.Now.ToString("yyyy-MM-dd");
+            
+            try
+            {
+                string query = "INSERT INTO dbo.Announcement (Author_id, time, description, type) " +
+                                "VALUES ( @author_id , @time , @description , @type ) ";
+                int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { staffID, date, description_txtBox.Text, typeAnnouncement_txtBox.Text });
+
+                if (link_txtBox.Enabled)
+                {
+                    query = "SELECT TOP 1 announcement_id FROM dbo.Announcement ORDER BY announcement_id DESC";
+                    i = Convert.ToInt32(DataProvider.Instance.ExecuteScalar(query));
+
+                    query = "UPDATE dbo.Announcement SET link = @link WHERE announcement_id = @id ";
+                    i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { link_txtBox.Text, i });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void amount_txtBox_TextChanged(object sender, EventArgs e)
+        {
+            switch (typeAnnouncement_txtBox.Text)
+            {
+                case "   Changing Charge":
+                    link_txtBox.Enabled = false;
+                    description_txtBox.Text = "Changing charge to " + amount_txtBox.Text + "k vnd";
+                    break;
+                case "   Create Report (Income)":
+                    description_txtBox.Text = "Create Report (Income = " + amount_txtBox.Text + "k vnd)";
+                    break;
+                case "   Create Report (Outcome)":
+                    description_txtBox.Text = "Create Report (Outcome = " + amount_txtBox.Text + "k vnd)";
+                    break;
             }
         }
     }

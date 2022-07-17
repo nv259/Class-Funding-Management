@@ -173,7 +173,7 @@ namespace Service
         private void staffToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Hide();
-            StaffForm f = new StaffForm();
+            StaffForm f = new StaffForm(UserAccount.Mssv);
             f.ShowDialog();
             this.Show();
         }
