@@ -73,7 +73,7 @@ namespace Service
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string date = DateTime.Now.ToString("yyyy-MM-dd");
+            string date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             
             try
             {
@@ -93,9 +93,13 @@ namespace Service
 
                 if (typeAnnouncement_txtBox.Text == "   Changing Charge")
                 {
+                    query = "SELECT TOP 1 id FROM dbo.KHTN2021 ORDER BY id DESC";
+                    int khtn2021_id = Convert.ToInt32(DataProvider.Instance.ExecuteScalar(query));
                     query = "UPDATE dbo.KHTN2021 SET next_month_charge = @nxt_charge WHERE id = @id ";
-                    i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { amount_txtBox.Text, id });
+                    i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { Convert.ToInt32(amount_txtBox.Text), khtn2021_id });
                 }
+
+                MessageBox.Show("Task done");
             }
             catch (Exception ex)
             {
@@ -109,13 +113,13 @@ namespace Service
             {
                 case "   Changing Charge":
                     link_txtBox.Enabled = false;
-                    description_txtBox.Text = "Changing charge to " + amount_txtBox.Text + "k vnd";
+                    description_txtBox.Text = "Changing charge to " + amount_txtBox.Text + ".000 vnd";
                     break;
                 case "   Create Report (Income)":
-                    description_txtBox.Text = "Create Report (Income = " + amount_txtBox.Text + "k vnd)";
+                    description_txtBox.Text = "Create Report (Income = " + amount_txtBox.Text + ".000 vnd)";
                     break;
                 case "   Create Report (Outcome)":
-                    description_txtBox.Text = "Create Report (Outcome = " + amount_txtBox.Text + "k vnd)";
+                    description_txtBox.Text = "Create Report (Outcome = " + amount_txtBox.Text + ".000 vnd)";
                     break;
             }
         }

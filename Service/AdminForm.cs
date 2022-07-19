@@ -126,11 +126,11 @@ namespace Service
             db_current_income = Convert.ToInt32(row["current_income"]);
             db_current_outcome = Convert.ToInt32(row["current_outcome"]);
             db_current_charge = Convert.ToInt32(row["charge"]);
-            db_nxt_charge = Convert.ToInt32(row["nxt_charge"]);
+            db_nxt_charge = Convert.ToInt32(row["next_month_charge"]);
             db_current_month = Convert.ToInt32(row["current_month"]);
             #endregion
 
-            query = "SELECT COUNT(*) FROM dbo.MonthlyFunding WHERE ";
+            query = "SELECT COUNT(*) FROM dbo.MonthlyFunding WHERE funded = 1";
             int num_person = Convert.ToInt32(DataProvider.Instance.ExecuteScalar(query));
 
             if (db_current_month == today_month)

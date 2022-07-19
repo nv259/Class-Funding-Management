@@ -180,7 +180,8 @@ namespace Service
 
         private void publicAnnoucementToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            AnnouncementForm f = new AnnouncementForm((UserAccount.Role == "Staff"));
+            f.ShowDialog();
         }
     }
 }
