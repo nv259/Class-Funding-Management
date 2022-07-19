@@ -81,13 +81,20 @@ namespace Service
                                 "VALUES ( @author_id , @time , @description , @type ) ";
                 int i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { staffID, date, description_txtBox.Text, typeAnnouncement_txtBox.Text });
 
+                query = "SELECT TOP 1 announcement_id FROM dbo.Announcement ORDER BY announcement_id DESC";
+                int id = Convert.ToInt32(DataProvider.Instance.ExecuteScalar(query));
+                
                 if (link_txtBox.Enabled)
                 {
-                    query = "SELECT TOP 1 announcement_id FROM dbo.Announcement ORDER BY announcement_id DESC";
-                    i = Convert.ToInt32(DataProvider.Instance.ExecuteScalar(query));
 
                     query = "UPDATE dbo.Announcement SET link = @link WHERE announcement_id = @id ";
-                    i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { link_txtBox.Text, i });
+                    i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { link_txtBox.Text, id });
+                }
+
+                if (typeAnnouncement_txtBox.Text == "   Changing Charge")
+                {
+                    query = "UPDATE dbo.KHTN2021 SET next_month_charge = @nxt_charge WHERE id = @id ";
+                    i = DataProvider.Instance.ExecuteNonQuery(query, new object[] { amount_txtBox.Text, id });
                 }
             }
             catch (Exception ex)

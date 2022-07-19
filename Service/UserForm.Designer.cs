@@ -115,6 +115,7 @@
             this.publicAnnoucementToolStripMenuItem.Name = "publicAnnoucementToolStripMenuItem";
             this.publicAnnoucementToolStripMenuItem.Size = new System.Drawing.Size(159, 24);
             this.publicAnnoucementToolStripMenuItem.Text = "Public Annoucement";
+            this.publicAnnoucementToolStripMenuItem.Click += new System.EventHandler(this.publicAnnoucementToolStripMenuItem_Click);
             // 
             // logoutToolStripMenuItem
             // 

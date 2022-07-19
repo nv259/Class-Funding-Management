@@ -342,7 +342,7 @@
             this.description_txtBox.Location = new System.Drawing.Point(88, 182);
             this.description_txtBox.Multiline = true;
             this.description_txtBox.Name = "description_txtBox";
-            this.description_txtBox.Size = new System.Drawing.Size(214, 27);
+            this.description_txtBox.Size = new System.Drawing.Size(214, 64);
             this.description_txtBox.TabIndex = 30;
             // 
             // textBox12

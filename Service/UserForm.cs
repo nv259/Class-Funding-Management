@@ -177,5 +177,10 @@ namespace Service
             f.ShowDialog();
             this.Show();
         }
+
+        private void publicAnnoucementToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
