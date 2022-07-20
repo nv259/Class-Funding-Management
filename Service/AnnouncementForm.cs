@@ -15,27 +15,23 @@ namespace Service
     public partial class AnnouncementForm : Form
     {
         private BindingSource announceList = new BindingSource();
-        public AnnouncementForm(bool isStaff)
+        public AnnouncementForm(bool isStaff, int user_id)
         {
-            //ProcessStartInfo psInfo = new ProcessStartInfo
-            //{
-            //    FileName = "https://docs.google.com/spreadsheets/d/1f_qkf1CXuf1r1k6cc0SW1zIDHB2NAUl7L3pTQ7AJjVI/edit?usp=sharing",
-            //    UseShellExecute = true
-            //};
-            //Process.Start(psInfo);
             InitializeComponent();
+            if (isStaff)
+            {
+                update_btn.Visible = true;
+                update_btn.Enabled = true;
+            }
             main_dtgv.DataSource = announceList;
+            AddBinding();
             LoadDtgv();
         }
 
-        private void newer_btn_Click(object sender, EventArgs e)
+        void AddBinding()
         {
-
-        }
-
-        private void older_btn_Click(object sender, EventArgs e)
-        {
-
+            link_txtBox.DataBindings.Add("Text", main_dtgv.DataSource, "LINK");
+            article_txtBox.DataBindings.Add("Text", main_dtgv.DataSource, "ARTICLE");
         }
 
         void LoadDtgv()
@@ -46,12 +42,30 @@ namespace Service
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void openArticle_btn_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(link_txtBox.Text))
+            {
+                if (MessageBox.Show("This will direct you to Article: " + article_txtBox.Text + " through your browser", "Notification", MessageBoxButtons.OKCancel) != DialogResult.OK)
+                    return;
 
+                try
+                {
+                    ProcessStartInfo psInfo = new ProcessStartInfo
+                    {
+                        FileName = link_txtBox.Text,
+                        UseShellExecute = true
+                    };
+                    Process.Start(psInfo);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("This article (or link) is not exist!");
+                }
+            }
         }
     }
 }
